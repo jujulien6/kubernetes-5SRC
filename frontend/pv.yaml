@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-pv # Change the name as needed
+  namespace: project
+spec:
+  capacity:
+    storage: 1Gi # Adjust the storage capacity as needed
+  accessModes:
+  - ReadWriteOnce # Adjust the access mode as needed
+  persistentVolumeReclaimPolicy: Retain # Adjust the reclaim policy as needed
+  storageClassName: manual # You can set the storage class name as needed
+  hostPath:
+    path: /usr/share/nginx/html/ # Adjust the host path as needed

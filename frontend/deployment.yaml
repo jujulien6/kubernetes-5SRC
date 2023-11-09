@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: project
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: {{ .Values.containers.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.port.number }}
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-index-file
+              mountPath: //usr/share/nginx/html/
+      volumes:
+        - name: nginx-index-file
+          configMap:
+            name: {{ .Release.Name }}-index-html
+        - name: pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-pvc
+        - name: secret-volume
+          secret:
+            secretName: {{ .Release.Name }}-my-secret

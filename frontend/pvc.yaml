@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-pvc # Change the name as needed
+  namespace: project
+spec:
+  accessModes:
+  - ReadWriteOnce # Adjust the access mode to match the PV
+  resources:
+    requests:
+      storage: 1Gi # Request the desired storage capacity
+  storageClassName: manual # Match the storage class name from the PV
