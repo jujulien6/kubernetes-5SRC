@@ -43,7 +43,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 5432
+  port: 3306
 
 ingress:
   enabled: false
