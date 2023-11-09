@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: project
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: {{ .Values.containers.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.port.number }}
+              protocol: TCP
+          volumeMounts:
+            - name: flask-file
+              mountPath: /backend/app
+      volumes:
+        - name: flask-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-pvc
+        - name: flask-file
+          persistentVolume:
+            name: {{ .Release.Name }}-pv
+        - name: secret-volume
+          secret:
+            secretName: {{ .Release.Name }}-my-secret
