@@ -1,0 +1,13 @@
+# mon-projet-chart/templates/database-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  namespace: project
+spec:
+  selector:
+    app: project
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
